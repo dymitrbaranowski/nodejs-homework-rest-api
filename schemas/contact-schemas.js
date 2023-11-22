@@ -1,14 +1,14 @@
 import Joi from "joi";
 
 export const contactAddSchema = Joi.object({
-  title: Joi.string().required().messages({
-    "any.required": `"title" must be exist`,
-    "string.base": `"title" must be text`,
+  name: Joi.string().required().messages({
+    "any.required": `"name" must be exist`,
+    "string.base": `name" must be text`,
   }),
-  director: Joi.string().required(),
+  email: Joi.string().required(),
 });
 
 export const contactUpdateSchema = Joi.object({
-  title: Joi.string(),
-  director: Joi.string(),
+  name: Joi.string(),
+  email: Joi.string(),
 });
