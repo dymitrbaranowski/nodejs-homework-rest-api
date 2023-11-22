@@ -6,9 +6,11 @@ export const contactAddSchema = Joi.object({
     "string.base": `name" must be text`,
   }),
   email: Joi.string().required(),
+  phone: Joi.number().required(),
 });
 
 export const contactUpdateSchema = Joi.object({
   name: Joi.string(),
   email: Joi.string(),
+  phone: Joi.number().required(),
 });

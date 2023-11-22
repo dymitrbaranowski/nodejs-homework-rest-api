@@ -1,14 +1,11 @@
+import Contact from "../models/Contacts.js";
 import { ctrlWrapper } from "../decorators/index.js";
 
 import { HttpError } from "../helpers/index.js";
 
-const getAll = async (req, res, next) => {
-  try {
-    const result = await contactService.listContacts();
-    res.json(result);
-  } catch (error) {
-    next(error);
-  }
+const getAll = async (req, res) => {
+  const result = await Contact.find();
+  res.json(result);
 };
 
 // const getById = async (req, res, next) => {
