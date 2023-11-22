@@ -1,9 +1,49 @@
 import { Schema, model } from "mongoose";
+import Joi from "joi";
 
-const contactSchema = new Schema({
-  name: String,
-  email: String,
-  phone: Number,
+import { handleSaveError, preUpdate } from "./hooks.js";
+
+const contactSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Set name for contact"],
+    },
+    email: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { versionKey: false, timestamps: true }
+);
+
+contactSchema.post("save", handleSaveError);
+
+contactSchema.pre("findOneAndUpdate", preUpdate);
+
+contactSchema.post("findOneAndUpdate", handleSaveError);
+
+export const contactAddSchema = Joi.object({
+  name: Joi.string().required().messages({
+    "any.required": `"name" must be exist`,
+    "string.base": `name" must be text`,
+  }),
+  email: Joi.string().required(),
+  favorite: Joi.boolean(),
+  phone: Joi.string().required(),
+});
+
+export const contactUpdateSchema = Joi.object({
+  name: Joi.string(),
+  email: Joi.string(),
+  favorite: Joi.boolean(),
+  phone: Joi.string().required(),
 });
 
 const Contact = model("contact", contactSchema);

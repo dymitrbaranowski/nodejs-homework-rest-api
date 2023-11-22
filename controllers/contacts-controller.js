@@ -4,42 +4,24 @@ import { ctrlWrapper } from "../decorators/index.js";
 import { HttpError } from "../helpers/index.js";
 
 const getAll = async (req, res) => {
-  const result = await Contact.find();
+  const result = await Contact.find({}, "-createdAt -updatedAt");
   res.json(result);
 };
 
-// const getById = async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const result = await contactService.getContactById(id);
-//     if (!result) {
-//       throw HttpError(404, `Contact with id=${id} not found`);
-//       // const error = new Error(`Movie with id=${id} not found`);
-//       // error.status = 404;
-//       // throw error;
-//       // return res.status(404).json({
-//       //     message: `Movie with id=${id} not found`
-//       // })
-//     }
-//     res.json(result);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+const getById = async (req, res) => {
+  const { id } = req.params;
+  const result = await Contact.findOne({ _id: id });
+  if (!result) {
+    throw HttpError(404, `Contact with id=${id} not found`);
+  }
+  res.json(result);
+};
 
-// const add = async (req, res, next) => {
-//   try {
-//     const { error } = contactAddSchema.validate(req.body);
-//     if (error) {
-//       throw HttpError(400, error.message);
-//     }
-//     const result = await contactService.addContact(req.body);
+const add = async (req, res) => {
+  const result = await Contact.create(req.body);
 
-//     res.status(201).json(result);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+  res.status(201).json(result);
+};
 
 // const updateById = async (req, res, next) => {
 //   try {
@@ -79,8 +61,8 @@ const getAll = async (req, res) => {
 
 export default {
   getAll: ctrlWrapper(getAll),
-  // getById: ctrlWrapper(getById),
-  // add: ctrlWrapper(add),
+  getById: ctrlWrapper(getById),
+  add: ctrlWrapper(add),
   // updateById: ctrlWrapper(updateById),
   // deleteById: ctrlWrapper(deleteById),
 };
