@@ -5,6 +5,7 @@ import { HttpError } from "../helpers/index.js";
 
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
+  const { page = 1, limit = 10 } = req.query;
   const result = await Contact.find({ owner }, "-createdAt -updatedAt");
   res.json(result);
 };
