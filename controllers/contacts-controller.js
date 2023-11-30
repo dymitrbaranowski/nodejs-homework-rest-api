@@ -6,8 +6,12 @@ import { HttpError } from "../helpers/index.js";
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
   const { page = 1, limit = 10 } = req.query;
-  const result = await Contact.find({ owner }, "-createdAt -updatedAt");
-  res.json(result);
+  const skip = (page - 1) * limit;
+  const result = await Contact.find({ owner }, "-createdAt -updatedAt", {
+    skip,
+    limit,
+  }).populate("owner", "username email");
+  res.json({ result, total: 4 });
 };
 
 const getById = async (req, res) => {
