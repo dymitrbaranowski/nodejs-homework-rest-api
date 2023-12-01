@@ -1,8 +1,14 @@
+import fs from "fs/promises";
+
+import path from "path";
+
 import Contact from "../models/Contacts.js";
 import { ctrlWrapper } from "../decorators/index.js";
 
 import { HttpError } from "../helpers/index.js";
 
+const avatarsPath = path.resolve("public", "avatars");
+console.log(avatarsPath);
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
   const { page = 1, limit = 10, ...filterParams } = req.query;
@@ -28,9 +34,11 @@ const getById = async (req, res) => {
 
 const add = async (req, res) => {
   const { _id: owner } = req.user;
-  const result = await Contact.create({ ...req.body, owner });
+  const { path: oldPath, filename } = req.file;
+  await fs.rename();
+  // const result = await Contact.create({ ...req.body, owner });
 
-  res.status(201).json(result);
+  // res.status(201).json(result);
 };
 
 const updateById = async (req, res) => {
