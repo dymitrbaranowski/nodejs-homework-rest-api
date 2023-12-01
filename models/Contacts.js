@@ -19,6 +19,11 @@ const contactSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -50,6 +55,6 @@ export const contactFavoriteSchema = Joi.object({
   favorite: Joi.boolean().required(),
 });
 
-const Contact = model("movie", contactSchema);
+const Contact = model("contact", contactSchema);
 
 export default Contact;
