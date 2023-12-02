@@ -8,7 +8,8 @@ import { ctrlWrapper } from "../decorators/index.js";
 import { HttpError } from "../helpers/index.js";
 
 const avatarsPath = path.resolve("public", "avatars");
-console.log(avatarsPath);
+// console.log(avatarsPath);
+
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
   const { page = 1, limit = 10, ...filterParams } = req.query;
@@ -19,6 +20,8 @@ const getAll = async (req, res) => {
     skip,
     limit,
   }).populate("owner", "username email");
+
+  const total = await Contact.countDocuments(filter);
   res.json({ result, total });
 };
 
@@ -36,9 +39,9 @@ const add = async (req, res) => {
   const { _id: owner } = req.user;
   const { path: oldPath, filename } = req.file;
   await fs.rename();
-  // const result = await Contact.create({ ...req.body, owner });
+  const result = await Contact.create({ ...req.body, owner });
 
-  // res.status(201).json(result);
+  res.status(201).json(result);
 };
 
 const updateById = async (req, res) => {
@@ -60,7 +63,7 @@ const deleteById = async (req, res) => {
     throw HttpError(404, `Contact with id=${id} not found`);
   }
 
-  // res.status(204).send();
+  res.status(204).send();
 
   res.json({
     message: "Delete success",

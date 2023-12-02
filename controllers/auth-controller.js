@@ -59,7 +59,7 @@ const getCurrent = async (req, res) => {
   });
 };
 
-const signout = async (req, rea) => {
+const signout = async (req, res) => {
   const { _id } = req.user;
   await User.findByIdAndUpdate(_id, { token: "" });
 
