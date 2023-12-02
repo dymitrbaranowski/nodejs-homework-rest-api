@@ -38,8 +38,11 @@ const getById = async (req, res) => {
 const add = async (req, res) => {
   const { _id: owner } = req.user;
   const { path: oldPath, filename } = req.file;
-  await fs.rename();
-  const result = await Contact.create({ ...req.body, owner });
+  const newPath = path.join(postersPath, filename);
+  await fs.rename(oldPath, newPath);
+
+  const avatar = path.join("avatars", filename);
+  const result = await Contact.create({ ...req.body, avatar, owner });
 
   res.status(201).json(result);
 };
