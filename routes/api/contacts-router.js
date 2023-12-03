@@ -29,7 +29,7 @@ contactsRouter.get("/:id", isValidId, contactsController.getById);
 //  upload.arrey("poster",8)
 contactsRouter.post(
   "/",
-  upload.single("avatar"),
+  upload.single("avatarURL"),
   isEmptyBody,
   validateBody(contactAddSchema),
   contactsController.add

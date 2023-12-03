@@ -6,6 +6,8 @@ import { HttpError } from "../helpers/index.js";
 
 import { ctrlWrapper } from "../decorators/index.js";
 
+import "dotenv/config.js";
+
 const { JWT_SECRET } = process.env;
 
 const authenticate = async (req, res, next) => {
