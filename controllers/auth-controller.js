@@ -83,14 +83,14 @@ const signout = async (req, res) => {
 const updateAvatar = async (req, res) => {
   const { _id } = req.user;
   const { path: oldPath, originalname } = req.file;
-  const img = await Jimp.read(tempUpload);
+  const img = await Jimp.read(oldPath);
   await img
     .autocrop()
     .cover(250, 250, Jimp.HORIZONTAL_ALIGN_CENTER | Jimp.VERTICAL_ALIGN_MIDDLE)
     .writeAsync(tempUpload);
 
   const filename = `${Date.now()}-${originalname}`;
-  const resultUpload = path.join(avatarDir, filename);
+  const newPath = path.join(avatarURL, filename);
   await fs.rename(oldPath, newPath);
   const avatarURL = path.join("avatars", filename);
   await User.findByIdAndUpdate(_id, { avatarURL });
