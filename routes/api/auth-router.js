@@ -6,7 +6,7 @@ import { authenticate, isEmptyBody } from '../../middlewares/index.js';
 
 import { validateBody } from '../../decorators/index.js';
 
-import { upload } from '../../middlewares/upload.js';
+import { upload } from '../../middlewares/index.js';
 
 import { userSignupSchema, userSigninSchema } from '../../models/User.js';
 
@@ -30,10 +30,10 @@ authRouter.get('/current', authenticate, authController.getCurrent);
 
 authRouter.post('/signout', authenticate, authController.signout);
 
-router.patch(
+authRouter.patch(
   '/avatars',
   authenticate,
-  upload.single('avatar'),
+  upload.single('avatarURL'),
   ctrl.updateAvatar
 );
 
