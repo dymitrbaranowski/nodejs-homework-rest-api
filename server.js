@@ -18,4 +18,3 @@ mongoose
     process.exit(1);
   });
 // mNfolheFyQPwAIIJ
-console.log(JWT_SECRET);
