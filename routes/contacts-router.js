@@ -2,21 +2,21 @@ import express from 'express';
 
 // import contactService from "../../models/contacts/index.js";
 
-import contactsController from '../../controllers/contacts-controller.js';
+import contactsController from '../controllers/contacts-controller.js';
 import {
   authenticate,
   isEmptyBody,
   isValidId,
   upload,
-} from '../../middlewares/index.js';
+} from '../middlewares/index.js';
 
-import { validateBody } from '../../decorators/index.js';
+import { validateBody } from '../decorators/index.js';
 
 import {
   contactAddSchema,
   contactUpdateSchema,
   contactFavoriteSchema,
-} from '../../models/Contact.js';
+} from '../models/Contact.js';
 const contactsRouter = express.Router();
 
 contactsRouter.use(authenticate);

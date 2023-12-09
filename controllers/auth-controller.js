@@ -1,18 +1,18 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import "dotenv/config.js";
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import 'dotenv/config.js';
 
-import path from "path";
-import fs from "fs/promises";
-import Jimp from "jimp";
+import path from 'path';
+import fs from 'fs/promises';
+import Jimp from 'jimp';
 
-import gravatar from "gravatar";
+import gravatar from 'gravatar';
 
-import User from "../models/User.js";
+import User from '../models/User.js';
 
-import { ctrlWrapper } from "../decorators/index.js";
+import { ctrlWrapper } from '../decorators/index.js';
 
-import { HttpError } from "../helpers/index.js";
+import { HttpError } from '../helpers/index.js';
 
 const { JWT_SECRET } = process.env;
 
@@ -20,7 +20,7 @@ const signup = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (user) {
-    throw HttpError(409, " Email already exist");
+    throw HttpError(409, ' Email already exist');
   }
 
   const hashPassword = await bcrypt.hash(password, 10);
@@ -43,18 +43,18 @@ const signin = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    throw HttpError(401, "Email or password invalid");
+    throw HttpError(401, 'Email or password invalid');
   }
   const passwordCompare = await bcrypt.compare(password, user.password);
   if (!passwordCompare) {
-    throw HttpError(401, "Email or password invalid");
+    throw HttpError(401, 'Email or password invalid');
   }
 
   const payload = {
     id: user._id,
   };
 
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "23h" });
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '23h' });
   await User.findByIdAndUpdate(user._id, { token });
 
   res.json({
@@ -73,10 +73,10 @@ const getCurrent = async (req, res) => {
 
 const signout = async (req, res) => {
   const { _id } = req.user;
-  await User.findByIdAndUpdate(_id, { token: "" });
+  await User.findByIdAndUpdate(_id, { token: '' });
 
   res.json({
-    message: "Signout success",
+    message: 'Signout success',
   });
 };
 
@@ -92,7 +92,7 @@ const updateAvatar = async (req, res) => {
   const filename = `${Date.now()}-${originalname}`;
   const newPath = path.join(avatarURL, filename);
   await fs.rename(oldPath, newPath);
-  const avatarURL = path.join("avatars", filename);
+  const avatarURL = path.join('avatars', filename);
   await User.findByIdAndUpdate(_id, { avatarURL });
   res.status(200).json({ avatarURL });
 };

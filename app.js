@@ -3,9 +3,9 @@ import logger from 'morgan';
 import cors from 'cors';
 import 'dotenv/config';
 
-import authRouter from './routes/api/auth-router.js';
+import authRouter from './routes/auth-router.js';
 
-import contactsRouter from './routes/api/contacts-router.js';
+import contactsRouter from './routes/contacts-router.js';
 
 // dotenv.config();
 
