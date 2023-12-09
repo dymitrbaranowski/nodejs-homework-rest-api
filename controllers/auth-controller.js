@@ -17,8 +17,8 @@ import { HttpError } from '../helpers/index.js';
 const { JWT_SECRET } = process.env;
 
 const signup = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  const { email, password, subscription } = req.body;
+  const user = await User.findOne({ email, subscription });
   if (user) {
     throw HttpError(409, ' Email already exist');
   }
@@ -34,8 +34,10 @@ const signup = async (req, res) => {
   });
 
   res.status(201).json({
-    username: newUser.username,
-    email: newUser.email,
+    user: {
+      email: newUser.email,
+      subscription: newUser.subscription,
+    },
   });
 };
 
@@ -57,17 +59,21 @@ const signin = async (req, res) => {
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '23h' });
   await User.findByIdAndUpdate(user._id, { token });
 
-  res.json({
-    token,
+  res.status(200).json({
+    token: token,
+    user: {
+      email: user.email,
+      subscription: user.subscription,
+    },
   });
 };
 
 const getCurrent = async (req, res) => {
-  const { username, email } = req.user;
+  const { email, subscription } = req.user;
 
-  res.json({
-    username,
+  res.status(200).json({
     email,
+    subscription,
   });
 };
 

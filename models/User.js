@@ -48,9 +48,10 @@ userSchema.pre('findOneAndUpdate', preUpdate);
 userSchema.post('findOneAndUpdate', handleSaveError);
 
 export const userSignupSchema = Joi.object({
-  username: Joi.string().required(),
+  // username: Joi.string().required(),
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).required(),
+  subscription: Joi.string(),
 });
 
 export const userSigninSchema = Joi.object({
