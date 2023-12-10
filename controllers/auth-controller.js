@@ -93,6 +93,15 @@ const updateAvatar = async (req, res) => {
     .cover(250, 250, Jimp.HORIZONTAL_ALIGN_CENTER | Jimp.VERTICAL_ALIGN_MIDDLE)
     .writeAsync(tempUpload);
 
+  const UploadError = message => {
+    const error = new Error(message);
+    return error;
+  };
+
+  if (!tempUpload) {
+    throw UploadError('tempUpload is not defined');
+  }
+
   const filename = `${Date.now()}-${originalname}`;
   const newPath = path.join(avatarURL, filename);
   await fs.rename(oldPath, newPath);
