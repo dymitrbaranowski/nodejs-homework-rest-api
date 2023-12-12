@@ -3,6 +3,10 @@ import jwt from 'jsonwebtoken';
 import 'dotenv/config.js';
 
 import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
 import fs from 'fs/promises';
 import Jimp from 'jimp';
 
@@ -15,6 +19,8 @@ import { ctrlWrapper } from '../decorators/index.js';
 import { HttpError } from '../helpers/index.js';
 
 const { JWT_SECRET } = process.env;
+
+const avatarDir = path.join(__dirname, '../', 'public', 'avatars');
 
 const signup = async (req, res) => {
   const { email, password, subscription } = req.body;
@@ -103,9 +109,11 @@ const updateAvatar = async (req, res) => {
   }
 
   const filename = `${Date.now()}-${originalname}`;
-  const newPath = path.join(avatarURL, filename);
-  await fs.rename(tempUpload, newPath);
   const avatarURL = path.join('avatars', filename);
+
+  const newPath = path.join(avatarDir, filename);
+  await fs.rename(tempUpload, newPath);
+
   await User.findByIdAndUpdate(_id, { avatarURL });
   res.status(200).json({ avatarURL });
 };
