@@ -1,7 +1,14 @@
-import Contact from "../models/Contacts.js";
-import { ctrlWrapper } from "../decorators/index.js";
+import fs from 'fs/promises';
 
-import { HttpError } from "../helpers/index.js";
+import path from 'path';
+
+import Contact from '../models/Contact.js';
+import { ctrlWrapper } from '../decorators/index.js';
+
+import { HttpError } from '../helpers/index.js';
+
+const avatarsPath = path.resolve('public', 'avatars');
+// console.log(avatarsPath);
 
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
@@ -9,10 +16,12 @@ const getAll = async (req, res) => {
   const skip = (page - 1) * limit;
   const filter = { owner, ...filterParams };
 
-  const result = await Contact.find(filter, "-createdAt -updatedAt", {
+  const result = await Contact.find(filter, '-createdAt -updatedAt', {
     skip,
     limit,
-  }).populate("owner", "username email");
+  }).populate('owner', 'username email');
+
+  const total = await Contact.countDocuments(filter);
   res.json({ result, total });
 };
 
@@ -28,7 +37,14 @@ const getById = async (req, res) => {
 
 const add = async (req, res) => {
   const { _id: owner } = req.user;
-  const result = await Contact.create({ ...req.body, owner });
+  // console.log(req.file);
+  // console.log(req.body);
+  const { path: oldPath, filename } = req.file;
+  const newPath = path.join(avatarsPath, filename);
+  await fs.rename(oldPath, newPath);
+
+  const avatarURL = path.join('avatars', filename);
+  const result = await Contact.create({ ...req.body, avatarURL, owner });
 
   res.status(201).json(result);
 };
@@ -52,10 +68,10 @@ const deleteById = async (req, res) => {
     throw HttpError(404, `Contact with id=${id} not found`);
   }
 
-  // res.status(204).send();
+  res.status(204).send();
 
   res.json({
-    message: "Delete success",
+    message: 'Delete success',
   });
 };
 

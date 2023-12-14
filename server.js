@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-import app from "./app.js";
+import app from './app.js';
 
-const { DB_HOST, PORT = 3000 } = process.env;
+const { DB_HOST, JWT_SECRET, PORT = 3000 } = process.env;
 
 mongoose
   .connect(DB_HOST)
@@ -11,9 +11,9 @@ mongoose
       console.log(`Server running. Use our API on port: ${PORT}`);
     });
 
-    console.log("Success connection to database");
+    console.log('Success connection to database');
   })
-  .catch((error) => {
+  .catch(error => {
     console.log(error.message);
     process.exit(1);
   });
