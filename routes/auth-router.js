@@ -21,6 +21,8 @@ authRouter.post(
   authController.signup
 );
 
+authRouter.get('/verify/:verificationCode', authController.verify);
+
 authRouter.post(
   '/signin',
   isEmptyBody,
