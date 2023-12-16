@@ -38,7 +38,7 @@ const signup = async (req, res) => {
   const newUser = await User.create({
     ...req.body,
     password: hashPassword,
-    verificationCode: verificationToken,
+    verificationToken: verificationToken,
     avatarURL,
   });
   const verifyEmail = {
