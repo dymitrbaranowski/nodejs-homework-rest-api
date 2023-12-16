@@ -27,7 +27,7 @@ const signup = async (req, res) => {
   const { email, password, subscription } = req.body;
   const user = await User.findOne({ email, subscription });
   if (user) {
-    throw HttpError(409, ' Email already exist');
+    throw HttpError(404, 'user validation failed');
   }
 
   const hashPassword = await bcrypt.hash(password, 10);
